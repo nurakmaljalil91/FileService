@@ -6,6 +6,7 @@ using Application.Common.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Data.Interceptors;
 using Infrastructure.Services;
+using Infrastructure.Storage;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Configuration;
@@ -81,6 +82,10 @@ public static class DependencyInjection
 
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IClockService, ClockService>();
+
+        services.Configure<MinioOptions>(options =>
+            configuration.GetSection(MinioOptions.SectionName).Bind(options));
+        services.AddSingleton<IStorageService, MinioStorageService>();
 
         return services;
     }
