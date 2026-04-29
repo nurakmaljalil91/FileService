@@ -1,0 +1,6 @@
+services:
+  fileservice:
+    image: ${DOCKER_REGISTRY-}fileservice
+    build:
+      context: .
+      dockerfile: Dockerfile
