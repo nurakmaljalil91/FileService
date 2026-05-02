@@ -53,4 +53,15 @@ public class MinioStorageService : IStorageService
 
         return $"{_options.PublicBaseUrl}/{objectKey}";
     }
+
+    /// <inheritdoc />
+    public async Task<StoredFileDownload> DownloadAsync(string objectKey, CancellationToken ct)
+    {
+        var response = await _client.GetObjectAsync(_options.Bucket, objectKey, ct);
+
+        return new StoredFileDownload(
+            response.ResponseStream,
+            response.Headers.ContentType,
+            response.Headers.ContentLength);
+    }
 }

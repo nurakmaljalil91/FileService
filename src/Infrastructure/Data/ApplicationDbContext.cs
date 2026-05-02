@@ -30,6 +30,9 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
     /// <inheritdoc />
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
 
+    /// <inheritdoc />
+    public DbSet<FileRecord> FileRecords => Set<FileRecord>();
+
     /// <summary>
     /// Configures the entity model for the context.
     /// </summary>

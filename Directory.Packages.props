@@ -32,6 +32,7 @@
     <PackageVersion Include="AspNetCore.HealthChecks.NpgSql" Version="9.0.0" />
     <PackageVersion Include="EFCore.NamingConventions" Version="10.0.0-rc.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.1" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.1" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
     <!-- Packages for Domain -->
     <PackageVersion Include="NodaTime" Version="3.2.3" />

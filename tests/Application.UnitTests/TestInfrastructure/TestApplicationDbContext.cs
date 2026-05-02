@@ -29,6 +29,11 @@ public sealed class TestApplicationDbContext : DbContext, IApplicationDbContext
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
 
     /// <summary>
+    /// Gets the <see cref="DbSet{FileRecord}"/> representing uploaded file metadata.
+    /// </summary>
+    public DbSet<FileRecord> FileRecords => Set<FileRecord>();
+
+    /// <summary>
     /// Configures the entity mappings for the context.
     /// </summary>
     /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
@@ -48,6 +53,12 @@ public sealed class TestApplicationDbContext : DbContext, IApplicationDbContext
             builder.HasOne(x => x.List)
                 .WithMany(x => x.Items)
                 .HasForeignKey(x => x.ListId);
+        });
+
+        modelBuilder.Entity<FileRecord>(builder =>
+        {
+            builder.HasKey(x => x.Id);
+            builder.Property(x => x.Category).HasConversion<string>();
         });
     }
 }

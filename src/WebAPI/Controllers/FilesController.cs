@@ -1,6 +1,8 @@
 #nullable enable
 using Application.Files.Commands;
 using Application.Files.Models;
+using Application.Files.Queries;
+using Application.Common.Models;
 using Domain.Common;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebAPI.Controllers;
 
 /// <summary>
-/// Handles file upload operations.
+/// Handles file upload and admin file management operations.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
@@ -27,8 +29,7 @@ public class FilesController : ControllerBase
     }
 
     /// <summary>
-    /// Uploads a file to object storage and returns its public URL.
-    /// Accepts JPEG, PNG, or WebP images up to 5 MB.
+    /// Uploads a file to object storage and stores metadata for admin tracking.
     /// </summary>
     /// <param name="file">The file to upload.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
@@ -51,5 +52,51 @@ public class FilesController : ControllerBase
         var result = await _mediator.Send(command, cancellationToken);
 
         return Ok(result);
+    }
+
+    /// <summary>
+    /// Retrieves uploaded file metadata for the admin file table.
+    /// </summary>
+    /// <param name="query">The query parameters for pagination, sorting, filtering, and category selection.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>A paginated list of uploaded file metadata.</returns>
+    [HttpGet]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<BaseResponse<PaginatedEnumerable<FileRecordDto>>>> GetFiles(
+        [FromQuery] GetFileRecordsQuery query,
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(query, cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Retrieves upload counts and total sizes grouped by category for admins.
+    /// </summary>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>Summary metrics for image, video, audio, and document uploads.</returns>
+    [HttpGet("summary")]
+    [Authorize(Roles = "Admin")]
+    public async Task<ActionResult<BaseResponse<IReadOnlyCollection<FileCategorySummaryDto>>>> GetSummary(
+        CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new GetFileCategorySummaryQuery(), cancellationToken);
+        return Ok(result);
+    }
+
+    /// <summary>
+    /// Downloads an uploaded file by metadata identifier. Admin only.
+    /// </summary>
+    /// <param name="id">Uploaded file metadata identifier.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>The uploaded file stream.</returns>
+    [HttpGet("{id:long}/download")]
+    [Authorize(Roles = "Admin")]
+    public async Task<IActionResult> Download(long id, CancellationToken cancellationToken)
+    {
+        var result = await _mediator.Send(new DownloadFileQuery { Id = id }, cancellationToken);
+        var file = result.Data!;
+
+        return File(file.Content, file.ContentType, file.FileName);
     }
 }
