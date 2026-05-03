@@ -87,7 +87,7 @@ public class ApplicationDbContextInitialiser
     /// </summary>
     public async Task TrySeedAsync()
     {
-        if (!_context.TodoLists.Any())
+        if (!await _context.TodoLists.AnyAsync())
         {
             _context.TodoLists.Add(new TodoList
             {
