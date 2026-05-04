@@ -35,52 +35,7 @@ namespace Infrastructure.Data.Migrations
                     table.PrimaryKey("pk_file_records", x => x.id);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "todo_lists",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    colour_code = table.Column<string>(type: "text", nullable: true),
-                    created_date = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
-                    created_by = table.Column<string>(type: "text", nullable: true),
-                    updated_date = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
-                    updated_by = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_todo_lists", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "todo_items",
-                columns: table => new
-                {
-                    id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    list_id = table.Column<long>(type: "bigint", nullable: false),
-                    title = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    note = table.Column<string>(type: "text", nullable: true),
-                    priority = table.Column<int>(type: "integer", nullable: false),
-                    reminder = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    created_date = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
-                    created_by = table.Column<string>(type: "text", nullable: true),
-                    updated_date = table.Column<Instant>(type: "timestamp with time zone", nullable: false),
-                    updated_by = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_todo_items", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_todo_items_todo_lists_list_id",
-                        column: x => x.list_id,
-                        principalTable: "todo_lists",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateIndex(
+migrationBuilder.CreateIndex(
                 name: "ix_file_records_category",
                 table: "file_records",
                 column: "category");
@@ -96,10 +51,6 @@ namespace Infrastructure.Data.Migrations
                 column: "object_key",
                 unique: true);
 
-            migrationBuilder.CreateIndex(
-                name: "ix_todo_items_list_id",
-                table: "todo_items",
-                column: "list_id");
         }
 
         /// <inheritdoc />
@@ -108,11 +59,6 @@ namespace Infrastructure.Data.Migrations
             migrationBuilder.DropTable(
                 name: "file_records");
 
-            migrationBuilder.DropTable(
-                name: "todo_items");
-
-            migrationBuilder.DropTable(
-                name: "todo_lists");
         }
     }
 }

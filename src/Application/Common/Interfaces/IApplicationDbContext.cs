@@ -4,20 +4,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Application.Common.Interfaces;
 
 /// <summary>
-/// Represents the application's database context, providing access to TodoLists and TodoItems.
+/// Represents the application's database context.
 /// </summary>
 public interface IApplicationDbContext
 {
-    /// <summary>
-    /// Gets the set of <see cref="TodoList"/> entities.
-    /// </summary>
-    DbSet<TodoList> TodoLists { get; }
-
-    /// <summary>
-    /// Gets the set of <see cref="TodoItem"/> entities.
-    /// </summary>
-    DbSet<TodoItem> TodoItems { get; }
-
     /// <summary>
     /// Gets the set of uploaded file metadata records.
     /// </summary>

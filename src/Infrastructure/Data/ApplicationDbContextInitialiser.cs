@@ -1,4 +1,3 @@
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -85,23 +84,5 @@ public class ApplicationDbContextInitialiser
     /// <summary>
     /// Attempts to seed the application's database with default data if necessary.
     /// </summary>
-    public async Task TrySeedAsync()
-    {
-        if (!await _context.TodoLists.AnyAsync())
-        {
-            _context.TodoLists.Add(new TodoList
-            {
-                Title = "Todo List",
-                Items =
-                {
-                    new TodoItem { Title = "Make a todo list" },
-                    new TodoItem { Title = "Check off the first item" },
-                    new TodoItem { Title = "Realise you've already done two things on the list!" },
-                    new TodoItem { Title = "Reward yourself with a nice, long nap" },
-                }
-            });
-
-            await _context.SaveChangesAsync();
-        }
-    }
+    public static Task TrySeedAsync() => Task.CompletedTask;
 }

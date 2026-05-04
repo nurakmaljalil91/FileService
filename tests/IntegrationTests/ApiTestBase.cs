@@ -67,20 +67,4 @@ public abstract class ApiTestBase
         public int TotalPages { get; set; }
         public int TotalCount { get; set; }
     }
-
-    protected sealed class TodoItemResponse
-    {
-        public long Id { get; set; }
-        public long ListId { get; set; }
-        public string? Title { get; set; }
-        public bool Done { get; set; }
-    }
-
-    protected sealed class TodoListResponse
-    {
-        public long Id { get; set; }
-        public string? Title { get; set; }
-        public string? Colour { get; set; }
-        public IReadOnlyCollection<TodoItemResponse>? Items { get; set; }
-    }
 }

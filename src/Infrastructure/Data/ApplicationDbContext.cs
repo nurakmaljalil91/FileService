@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using Application.Common.Interfaces;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +6,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Infrastructure.Data;
 
 /// <summary>
-/// Represents the Entity Framework database context for the application,
-/// providing access to <see cref="TodoList"/> and <see cref="TodoItem"/> entities.
+/// Represents the Entity Framework database context for the application.
 /// </summary>
 public class ApplicationDbContext : DbContext, IApplicationDbContext
 {
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ApplicationDbContext"/> class using the specified options.
     /// </summary>
@@ -23,12 +18,6 @@ public class ApplicationDbContext : DbContext, IApplicationDbContext
         : base(options)
     {
     }
-
-    /// <inheritdoc />
-    public DbSet<TodoList> TodoLists => Set<TodoList>();
-
-    /// <inheritdoc />
-    public DbSet<TodoItem> TodoItems => Set<TodoItem>();
 
     /// <inheritdoc />
     public DbSet<FileRecord> FileRecords => Set<FileRecord>();
