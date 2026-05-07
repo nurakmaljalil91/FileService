@@ -2,7 +2,6 @@
 
 using Domain.Entities;
 using Domain.Enums;
-using NodaTime;
 
 namespace Application.Files.Models;
 
@@ -25,7 +24,7 @@ public sealed class FileRecordDto
         SizeBytes = fileRecord.SizeBytes;
         Category = fileRecord.Category;
         UploadedBy = fileRecord.CreatedBy;
-        UploadedAt = fileRecord.CreatedDate;
+        UploadedAt = fileRecord.CreatedDate.ToDateTimeOffset();
     }
 
     /// <summary>
@@ -71,5 +70,5 @@ public sealed class FileRecordDto
     /// <summary>
     /// Gets the upload timestamp.
     /// </summary>
-    public Instant UploadedAt { get; }
+    public DateTimeOffset UploadedAt { get; }
 }

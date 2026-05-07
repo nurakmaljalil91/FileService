@@ -35,7 +35,11 @@ try
     builder.Services.AddInfrastructureServices(builder.Configuration);
     builder.Services.AddWebAPIServices(builder.Configuration);
 
-    builder.Services.AddControllers();
+    builder.Services.AddControllers()
+        .AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        });
 
     var app = builder.Build();
 
