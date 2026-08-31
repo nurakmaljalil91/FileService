@@ -4,6 +4,7 @@ using Application.Files.Models;
 using Application.Files.Queries;
 using Application.Common.Models;
 using Domain.Common;
+using Domain.Constants;
 using Mediator;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -85,13 +86,13 @@ public class FilesController : ControllerBase
     }
 
     /// <summary>
-    /// Downloads an uploaded file by metadata identifier. Admin only.
+    /// Downloads an uploaded file by metadata identifier for an authorized platform role.
     /// </summary>
     /// <param name="id">Uploaded file metadata identifier.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The uploaded file stream.</returns>
     [HttpGet("{id:long}/download")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = FileAccessRoleConstants.Downloaders)]
     public async Task<IActionResult> Download(long id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new DownloadFileQuery { Id = id }, cancellationToken);
