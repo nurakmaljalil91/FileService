@@ -8,18 +8,18 @@ using Microsoft.Extensions.Options;
 namespace Infrastructure.Storage;
 
 /// <summary>
-/// <see cref="IStorageService"/> implementation backed by MinIO via the AWS S3 SDK.
+/// <see cref="IStorageService"/> implementation backed by S3-compatible storage via the AWS S3 SDK.
 /// </summary>
-public class MinioStorageService : IStorageService
+public class S3StorageService : IStorageService
 {
     private readonly AmazonS3Client _client;
-    private readonly MinioOptions _options;
+    private readonly StorageOptions _options;
 
     /// <summary>
-    /// Initializes a new instance of <see cref="MinioStorageService"/>.
+    /// Initializes a new instance of <see cref="S3StorageService"/>.
     /// </summary>
-    /// <param name="options">MinIO configuration.</param>
-    public MinioStorageService(IOptions<MinioOptions> options)
+    /// <param name="options">S3-compatible storage configuration.</param>
+    public S3StorageService(IOptions<StorageOptions> options)
     {
         _options = options.Value;
 
@@ -27,7 +27,8 @@ public class MinioStorageService : IStorageService
         var config = new AmazonS3Config
         {
             ServiceURL = _options.Endpoint,
-            ForcePathStyle = true   // required for MinIO path-style addressing
+            AuthenticationRegion = _options.Region,
+            ForcePathStyle = true   // Garage supports path-style S3 requests
         };
 
         _client = new AmazonS3Client(credentials, config);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -83,9 +83,9 @@ public static class DependencyInjection
         services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IClockService, ClockService>();
 
-        services.Configure<MinioOptions>(options =>
-            configuration.GetSection(MinioOptions.SectionName).Bind(options));
-        services.AddSingleton<IStorageService, MinioStorageService>();
+        services.Configure<StorageOptions>(options =>
+            configuration.GetSection(StorageOptions.SectionName).Bind(options));
+        services.AddSingleton<IStorageService, S3StorageService>();
 
         return services;
     }

@@ -1,21 +1,24 @@
 namespace Infrastructure.Storage;
 
 /// <summary>
-/// Configuration options for the MinIO object storage backend.
-/// Bound from the <c>Minio</c> section of appsettings.
+/// Configuration options for an S3-compatible object storage backend.
+/// Bound from the <c>Storage</c> section of appsettings.
 /// </summary>
-public class MinioOptions
+public class StorageOptions
 {
     /// <summary>Configuration section name.</summary>
-    public const string SectionName = "Minio";
+    public const string SectionName = "Storage";
 
-    /// <summary>MinIO API endpoint, e.g. <c>http://minio:9000</c>.</summary>
+    /// <summary>S3-compatible storage API endpoint, e.g. <c>http://garage:3900</c>.</summary>
     public string Endpoint { get; set; } = string.Empty;
 
-    /// <summary>Access key (root user).</summary>
+    /// <summary>Region used to sign S3 requests.</summary>
+    public string Region { get; set; } = "garage";
+
+    /// <summary>S3 access key.</summary>
     public string AccessKey { get; set; } = string.Empty;
 
-    /// <summary>Secret key (root password).</summary>
+    /// <summary>S3 secret key.</summary>
     public string SecretKey { get; set; } = string.Empty;
 
     /// <summary>Target bucket name.</summary>
@@ -23,7 +26,7 @@ public class MinioOptions
 
     /// <summary>
     /// Base URL used to build public object URLs, e.g.
-    /// <c>http://localhost:9000/cerxos-media</c>.
+    /// <c>http://localhost:9002</c>.
     /// </summary>
     public string PublicBaseUrl { get; set; } = string.Empty;
 }
