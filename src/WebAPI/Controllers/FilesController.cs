@@ -6,8 +6,10 @@ using Application.Common.Models;
 using Domain.Common;
 using Domain.Constants;
 using Mediator;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Authentication;
 
 namespace WebAPI.Controllers;
 
@@ -86,13 +88,16 @@ public class FilesController : ControllerBase
     }
 
     /// <summary>
-    /// Downloads an uploaded file by metadata identifier for an authorized platform role.
+    /// Downloads an uploaded file by metadata identifier for an authorized platform role or a trusted service
+    /// presenting the shared service API key.
     /// </summary>
     /// <param name="id">Uploaded file metadata identifier.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>The uploaded file stream.</returns>
     [HttpGet("{id:long}/download")]
-    [Authorize(Roles = FileAccessRoleConstants.Downloaders)]
+    [Authorize(
+        AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme + "," + ServiceApiKeyAuthenticationOptions.SchemeName,
+        Roles = FileAccessRoleConstants.Downloaders)]
     public async Task<IActionResult> Download(long id, CancellationToken cancellationToken)
     {
         var result = await _mediator.Send(new DownloadFileQuery { Id = id }, cancellationToken);

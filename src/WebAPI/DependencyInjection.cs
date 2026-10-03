@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Policy;
 using Microsoft.IdentityModel.Tokens;
+using WebAPI.Authentication;
 using WebAPI.Authorization;
 
 namespace WebAPI;
@@ -106,7 +107,10 @@ public static class DependencyInjection
                     NameClaimType = ClaimTypes.NameIdentifier,
                     RoleClaimType = ClaimTypes.Role
                 };
-            });
+            })
+            .AddScheme<ServiceApiKeyAuthenticationOptions, ServiceApiKeyAuthenticationHandler>(
+                ServiceApiKeyAuthenticationOptions.SchemeName,
+                options => options.ApiKey = configuration["ServiceAuthentication:ApiKey"]);
 
         services.AddAuthorization(options =>
         {

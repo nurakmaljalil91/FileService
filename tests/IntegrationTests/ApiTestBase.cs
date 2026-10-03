@@ -24,10 +24,10 @@ public abstract class ApiTestBase
             AllowAutoRedirect = false
         });
 
-    protected async Task<HttpClient> CreateAuthenticatedClientAsync()
+    protected async Task<HttpClient> CreateAuthenticatedClientAsync(params string[] roles)
     {
         var client = CreateClient();
-        var token = await GetTokenAsync(client);
+        var token = await GetTokenAsync(client, roles);
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         return client;
     }
@@ -39,12 +39,13 @@ public abstract class ApiTestBase
         return payload!;
     }
 
-    private static async Task<string> GetTokenAsync(HttpClient client)
+    private static async Task<string> GetTokenAsync(HttpClient client, string[] roles)
     {
         var login = new
         {
             Username = "integration-user",
-            Email = "integration@example.com"
+            Email = "integration@example.com",
+            Roles = roles
         };
 
         var response = await client.PostAsJsonAsync("/api/Auth/login", login);

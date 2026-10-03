@@ -6,6 +6,8 @@ namespace IntegrationTests;
 
 public class ApiFactory : WebApplicationFactory<Program>
 {
+    public const string ServiceApiKey = "integration-tests-service-api-key";
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Development");
@@ -19,6 +21,7 @@ public class ApiFactory : WebApplicationFactory<Program>
                 ["Jwt:Audience"] = "IntegrationTests",
                 ["Jwt:Key"] = "integration-tests-super-secret-key-1234567890",
                 ["Jwt:ExpiryMinutes"] = "60",
+                ["ServiceAuthentication:ApiKey"] = ServiceApiKey,
                 ["buildVersion"] = "integration-test-build"
             };
 
