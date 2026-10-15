@@ -123,6 +123,7 @@ public static class DependencyInjection
         services.AddSingleton<IAuthorizationMiddlewareResultHandler, CustomAuthorizationMiddlewareResultHandler>();
 
         services.AddTransient<ExceptionHandlingMiddleware>();
+        services.AddTransient<TokenScopeMiddleware>();
 
         return services;
     }
